@@ -14,7 +14,8 @@ final class MovieQuizViewController: UIViewController {
         super.viewDidLoad()
         // берём текущий вопрос из массива вопросов по индексу текущего вопроса
         let currentQuestion = questions[currentQuestionIndex]
-        
+        let firstQuestion = convert(model: currentQuestion)
+                show(quiz: firstQuestion)
     }
     
     @IBAction func noButtonClicked(_ sender: UIButton) {
