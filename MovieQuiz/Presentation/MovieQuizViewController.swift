@@ -18,14 +18,14 @@ final class MovieQuizViewController: UIViewController {
                 show(quiz: firstQuestion)
     }
     
-    @IBAction func noButtonClicked(_ sender: UIButton) {
+    @IBAction private func noButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex] // 1
         let givenAnswer = false // 2
         
         showAnswerResult(isCorrect: givenAnswer == currentQuestion.correctAnswer)
     }
     
-    @IBAction func yesButtonClicked(_ sender: UIButton) {
+    @IBAction private func yesButtonClicked(_ sender: UIButton) {
         let currentQuestion = questions[currentQuestionIndex] // 1
         let givenAnswer = true // 2
         
@@ -35,7 +35,15 @@ final class MovieQuizViewController: UIViewController {
     // приватный метод, который меняет цвет рамки
     // принимает на вход булевое значение и ничего не возвращает
     private func showAnswerResult(isCorrect: Bool) {
-            
+        imageView.layer.masksToBounds = true
+        imageView.layer.borderWidth = 8
+        imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+            self.showNextQuestionOrResults()
+            self.imageView.layer.borderColor = UIColor.clear.cgColor
+        }
+        
         if isCorrect { // 1
                 correctAnswers += 1 // 2
             }
@@ -43,9 +51,7 @@ final class MovieQuizViewController: UIViewController {
             imageView.layer.borderWidth = 8
             imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
             
-            DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
-                self.showNextQuestionOrResults()
-            }
+           
     }
     
     // приватный метод конвертации, который принимает моковый вопрос и возвращает вью модель для главного экрана
@@ -100,63 +106,63 @@ final class MovieQuizViewController: UIViewController {
         }
 }
 
-struct QuizQuestion {
-  let image: String
-  let text: String
-  let correctAnswer: Bool
+private struct QuizQuestion {
+    let image: String
+    let text: String
+    let correctAnswer: Bool
 }
 
-struct QuizStepViewModel {
-  let image: UIImage
-  let question: String
-  let questionNumber: String
+private struct QuizStepViewModel {
+    let image: UIImage
+    let question: String
+    let questionNumber: String
 }
 
-struct QuizResultsViewModel {
-  let title: String
-  let text: String
-  let buttonText: String
+private struct QuizResultsViewModel {
+    let title: String
+    let text: String
+    let buttonText: String
 }
 
 private let questions: [QuizQuestion] = [
-        QuizQuestion(
-            image: "The Godfather",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "The Dark Knight",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "Kill Bill",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "The Avengers",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "Deadpool",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "The Green Knight",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: true),
-        QuizQuestion(
-            image: "Old",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),
-        QuizQuestion(
-            image: "The Ice Age Adventures of Buck Wild",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),
-        QuizQuestion(
-            image: "Tesla",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false),
-        QuizQuestion(
-            image: "Vivarium",
-            text: "Рейтинг этого фильма больше чем 6?",
-            correctAnswer: false)
-    ]
+    QuizQuestion(
+        image: "The Godfather",
+        text: "Рейтинг этого фильма больше чем 6?",
+        correctAnswer: true),
+    QuizQuestion(
+        image: "The Dark Knight",
+        text: "Рейтинг этого фильма больше чем 6?",
+        correctAnswer: true),
+    QuizQuestion(
+        image: "Kill Bill",
+        text: "Рейтинг этого фильма больше чем 6?",
+        correctAnswer: true),
+    QuizQuestion(
+        image: "The Avengers",
+        text: "Рейтинг этого фильма больше чем 6?",
+        correctAnswer: true),
+    QuizQuestion(
+        image: "Deadpool",
+        text: "Рейтинг этого фильма больше чем 6?",
+        correctAnswer: true),
+    QuizQuestion(
+        image: "The Green Knight",
+        text: "Рейтинг этого фильма больше чем 6?",
+        correctAnswer: true),
+    QuizQuestion(
+        image: "Old",
+        text: "Рейтинг этого фильма больше чем 6?",
+        correctAnswer: false),
+    QuizQuestion(
+        image: "The Ice Age Adventures of Buck Wild",
+        text: "Рейтинг этого фильма больше чем 6?",
+        correctAnswer: false),
+    QuizQuestion(
+        image: "Tesla",
+        text: "Рейтинг этого фильма больше чем 6?",
+        correctAnswer: false),
+    QuizQuestion(
+        image: "Vivarium",
+        text: "Рейтинг этого фильма больше чем 6?",
+        correctAnswer: false)
+]
