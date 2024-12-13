@@ -39,9 +39,13 @@ final class MovieQuizViewController: UIViewController {
         imageView.layer.borderWidth = 8
         imageView.layer.borderColor = isCorrect ? UIColor.ypGreen.cgColor : UIColor.ypRed.cgColor
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) {
+        DispatchQueue.main.asyncAfter(deadline: .now() + 1.0) { [weak self] in // слабая ссылка на self
+            guard let self = self else { return } // разворачиваем слабую ссылку
+            
             self.showNextQuestionOrResults()
             self.imageView.layer.borderColor = UIColor.clear.cgColor
+            
+            
         }
         
         if isCorrect { // 1
@@ -78,7 +82,8 @@ final class MovieQuizViewController: UIViewController {
                     message: "Ваш результат: \(correctAnswers)/10",
                     preferredStyle: .alert)
 
-                let action = UIAlertAction(title: "Сыграть еще раз", style: .default) { _ in
+                let action = UIAlertAction(title: "Сыграть еще раз", style: .default) { [weak self] _ in // слабая ссылка на self
+                    guard let self = self else { return }
                     self.currentQuestionIndex = 0
                     // сбрасываем переменную с количеством правильных ответов
                     self.correctAnswers = 0
@@ -124,45 +129,3 @@ private struct QuizResultsViewModel {
     let buttonText: String
 }
 
-private let questions: [QuizQuestion] = [
-    QuizQuestion(
-        image: "The Godfather",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: true),
-    QuizQuestion(
-        image: "The Dark Knight",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: true),
-    QuizQuestion(
-        image: "Kill Bill",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: true),
-    QuizQuestion(
-        image: "The Avengers",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: true),
-    QuizQuestion(
-        image: "Deadpool",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: true),
-    QuizQuestion(
-        image: "The Green Knight",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: true),
-    QuizQuestion(
-        image: "Old",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: false),
-    QuizQuestion(
-        image: "The Ice Age Adventures of Buck Wild",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: false),
-    QuizQuestion(
-        image: "Tesla",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: false),
-    QuizQuestion(
-        image: "Vivarium",
-        text: "Рейтинг этого фильма больше чем 6?",
-        correctAnswer: false)
-]
