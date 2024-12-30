@@ -8,7 +8,7 @@
 import Foundation
 
 class QuestionFactory {
-    private let questions: [QuizQuestion] = [
+    var questions: [QuizQuestion] = [
         QuizQuestion(
             image: "The Godfather",
             text: "Рейтинг этого фильма больше чем 6?",
@@ -50,12 +50,21 @@ class QuestionFactory {
             text: "Рейтинг этого фильма больше чем 6?",
             correctAnswer: false)
     ]
-    func requestNextQuestion() -> QuizQuestion? { // 1
-        // 2
+    func requestNextQuestion() -> QuizQuestion? {
         guard let index = (0..<questions.count).randomElement() else {
             return nil
         }
-
-        return questions[safe: index] // 3
+        
+        return questions[index]
+    }
+    
+    subscript(index: Int) -> QuizQuestion? {
+        get {
+            if index >= 0 && index < questions.count {
+                return questions[index]
+            } else {
+                return nil
+            }
+        }
     }
 }
