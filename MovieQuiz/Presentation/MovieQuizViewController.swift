@@ -117,9 +117,7 @@ final class MovieQuizViewController: UIViewController {
             currentQuestionIndex += 1
             
             let nextQuestion = questionFactory.requestNextQuestion()
-            let viewModel = convert(model: nextQuestion)
             
-            show(quiz: viewModel)
         }
     }
 }
